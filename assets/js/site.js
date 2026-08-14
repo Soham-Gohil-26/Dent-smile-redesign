@@ -195,7 +195,7 @@
         form.reset();
         setNote('Thank you. We will call you back during clinic hours.', 'ok');
       }).catch(function () {
-        setNote('Could not send. Please call us on 88283 54171.', 'err');
+        setNote('Could not send. Please call us on +91 88283 54171.', 'err');
       }).finally(function () {
         btn.disabled = false; btn.textContent = 'Request appointment';
       });
@@ -522,9 +522,9 @@
 
   /* ── Gallery Category Filter ──────────────────────────── */
   var filterBtns = document.querySelectorAll('.gallery-filter-btn');
-  var caseItems = document.querySelectorAll('#casesGrid .case-item');
+  var galleryCaseItems = document.querySelectorAll('#casesGrid .case-item');
 
-  if (filterBtns.length > 0 && caseItems.length > 0) {
+  if (filterBtns.length > 0 && galleryCaseItems.length > 0) {
     filterBtns.forEach(function (btn) {
       btn.addEventListener('click', function () {
         var filter = this.getAttribute('data-filter');
@@ -532,7 +532,7 @@
         filterBtns.forEach(function (b) { b.classList.remove('active'); });
         this.classList.add('active');
 
-        caseItems.forEach(function (item) {
+        galleryCaseItems.forEach(function (item) {
           var cat = item.getAttribute('data-category');
           if (filter === 'all' || cat === filter) {
             item.classList.remove('is-hidden');
@@ -865,9 +865,9 @@
     btnQuizWhatsApp.addEventListener('click', function() {
       var phone = "918828354171";
       var msg = "Hello Dr. Muskan! I completed the Diagnostic Smile Assessment on your website:\n\n" +
-                "📋 Primary Concern: " + (popupQuizState.concern || "General Assessment") + "\n" +
-                "📅 Care Timeline: " + (popupQuizState.timeline || "Routine") + "\n" +
-                "⭐ Primary Goal: " + (popupQuizState.priority || "Gentle Care") + "\n\n" +
+                "- Primary Concern: " + (popupQuizState.concern || "General Assessment") + "\n" +
+                "- Care Timeline: " + (popupQuizState.timeline || "Routine") + "\n" +
+                "- Primary Goal: " + (popupQuizState.priority || "Gentle Care") + "\n\n" +
                 "I would like to book a personalized consultation with you at Dent-O-Smile.";
 
       var url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(msg);
@@ -892,7 +892,7 @@
     rct: {
       title: "Root Canal Treatment (RCT)",
       desc: "Designed to eliminate pain, treat traumatic tooth damage, and save an infected tooth structure without extraction.",
-      sittings: "1 – 2 Sittings",
+      sittings: "4 – 5 Sittings",
       pain: "Pain-Free (Anaesthesia)",
       longevity: "15 – 20 Years (with Crown)",
       tech: "Apex Locator + Endo Motor + Digital X-Ray",
@@ -900,12 +900,12 @@
     },
     aligners: {
       title: "Clear Aligners / Invisible Braces",
-      desc: "Custom-molded transparent trays that align your teeth progressively and comfortably.",
-      sittings: "6 Months – 1.5 to 2 Years",
+      desc: "Custom-molded transparent trays that correct dental malalignment and align your teeth progressively and comfortably.",
+      sittings: "6 Months – 18 Months",
       pain: "Zero Wires / Low Pressure",
       longevity: "Permanent",
       tech: "Digital 3D Scanner",
-      advice: "Wear 20-22 hours daily for maximum efficiency and fastest aesthetic alignment."
+      advice: "Ideal for correcting malalignment and gaps. Wear 20-22 hours daily for maximum efficiency and fastest aesthetic alignment."
     },
     implants: {
       title: "Dental Implants",
@@ -914,7 +914,7 @@
       pain: "Pain-Free (Local Anaesthesia & Chemical Treatment)",
       longevity: "25+ Years / Lifetime",
       tech: "Physio Dispenser + Digital 3D Scanner",
-      advice: "Integrates directly into the jawbone to preserve natural facial structure."
+      advice: "When clinically suitable, I recommend an implant as a long-term solution to restore function and help preserve the surrounding bone and teeth."
     },
     bonding: {
       title: "Direct Composite Bonding",
@@ -922,16 +922,16 @@
       sittings: "1 Single Sitting",
       pain: "100% Non-Invasive / No Pain",
       longevity: "15 – 20 Years",
-      tech: "Curing Light + Nano Composites",
-      advice: "Preserves 100% of your natural enamel without grinding down healthy teeth."
+      tech: "Nano Composites + Curing Light",
+      advice: "For minor chips, gaps, shape concerns, discolored or carious teeth, I recommend composite bonding when appropriate—it can improve your smile while preserving your natural tooth structure."
     },
     whitening: {
       title: "In-Clinic Teeth Whitening",
-      desc: "Professional shade lifting for deep coffee, tea, and stubborn surface stains.",
+      desc: "Professional shade lifting for a visibly brighter, radiant smile by erasing deep coffee, tea, and stubborn surface stains.",
       sittings: "1 Visit (45–60 mins)",
       pain: "Gentle / Mild Sensitivity",
       longevity: "1 – 3 Years",
-      tech: "Cold Light LED Accelerator",
+      tech: "",
       advice: "Follow up with post-treatment dietary advice to maintain brilliant brightness."
     }
   };
@@ -950,7 +950,15 @@
       if (estPain) estPain.textContent = d.pain;
       if (estLongevity) estLongevity.textContent = d.longevity;
       if (estAdvice) estAdvice.textContent = d.advice;
-      if (estTech && d.tech) estTech.textContent = d.tech;
+
+      var estTechBox = document.getElementById('estTechBox') || (estTech ? estTech.parentElement : null);
+      if (d.tech) {
+        if (estTech) estTech.textContent = d.tech;
+        if (estTechBox) estTechBox.style.display = '';
+      } else {
+        if (estTech) estTech.textContent = '';
+        if (estTechBox) estTechBox.style.display = 'none';
+      }
     });
   });
 
@@ -963,14 +971,14 @@
 
   var pillarData = {
     1: {
-      title: "I. Gentle & Pain-Conscious Anaesthesia",
+      title: "I. Gentle & Painless Anaesthesia",
       body: "We understand that dental anxiety is real. Dr. Muskan utilizes ultra-fine needles, topical numbing gels, and computer-calibrated administration to ensure zero pain during procedures.",
       highlight: "Patient Comfort Protocol: Every step is explained beforehand so there are zero surprises.",
       img: "assets/img/clinical-examination.jpg"
     },
     2: {
       title: "II. Hospital-Grade 6-Step Sterilization",
-      body: "Your health and safety are non-negotiable. Every instrument undergoes ultrasonic cleaning, enzymatic disinfectant bath, pouch sealing, and Class-B autoclave sterilization.",
+      body: "Your health and safety are non-negotiable. Every instrument undergoes an enzymatic disinfectant bath, pouch sealing, and Class-B autoclave sterilization.",
       highlight: "Zero Contamination Guarantee: Sealed sterile pouches are opened right in front of you.",
       img: "assets/img/pillar-sterilization-noface.png"
     },
@@ -1044,34 +1052,6 @@
     });
   }
 
-  /* ── Upgraded Clinic Photo Grid Interactivity & Filter Bar ── */
-  var clinicFilterBtns = document.querySelectorAll('.clinic-filter-btn');
-  var clinicStripCards = document.querySelectorAll('#clinicStrip .clinic-photo-card');
-  var clinicStrip = document.getElementById('clinicStrip');
-  var stripPrev = document.getElementById('stripPrev');
-  var stripNext = document.getElementById('stripNext');
-
-  if (clinicFilterBtns.length > 0 && clinicStripCards.length > 0) {
-    clinicFilterBtns.forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        clinicFilterBtns.forEach(function(b) { b.classList.remove('active'); });
-        this.classList.add('active');
-
-        var filter = this.getAttribute('data-filter');
-        clinicStripCards.forEach(function(card) {
-          var category = card.getAttribute('data-category');
-          if (filter === 'all' || category === filter) {
-            card.style.display = 'block';
-            card.style.opacity = '1';
-          } else {
-            card.style.display = 'none';
-          }
-        });
-        if (clinicStrip) clinicStrip.scrollLeft = 0;
-      });
-    });
-  }
-
   /* ══ Instant WhatsApp Slot Booking Modal & Slot Logic ══ */
   (function initWhatsAppSlotBooking() {
     var modalBackdrop = document.getElementById('slotModalBackdrop');
@@ -1081,15 +1061,160 @@
     var modalDateInput = document.getElementById('slotDate');
     var inlineDateInput = document.getElementById('inlineSlotDate');
 
-    // Default dates to Today (YYYY-MM-DD)
-    var todayStr = new Date().toISOString().split('T')[0];
+    // Helper: Local date formatted as YYYY-MM-DD
+    function getLocalDateStr(d) {
+      var date = d || new Date();
+      var year = date.getFullYear();
+      var month = String(date.getMonth() + 1).padStart(2, '0');
+      var day = String(date.getDate()).padStart(2, '0');
+      return year + '-' + month + '-' + day;
+    }
+
+    // Helper: Next open clinic date (Mon-Sat, skipping Sunday)
+    function getNextOpenDateStr() {
+      var d = new Date();
+      d.setDate(d.getDate() + 1);
+      if (d.getDay() === 0) { // Sunday closed
+        d.setDate(d.getDate() + 1); // Move to Monday
+      }
+      return getLocalDateStr(d);
+    }
+
+    // Helper: Parse slot text to minutes from midnight
+    function parseSlotToMinutes(slotStr) {
+      if (!slotStr) return 0;
+      var match = slotStr.trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+      if (!match) return 0;
+      var hours = parseInt(match[1], 10);
+      var minutes = parseInt(match[2], 10);
+      var period = match[3].toUpperCase();
+      if (period === 'PM' && hours < 12) hours += 12;
+      if (period === 'AM' && hours === 12) hours = 0;
+      return hours * 60 + minutes;
+    }
+
+    // Update slot availability & auto-select nearest available slot
+    function updateSlotAvailability(formElement) {
+      if (!formElement) return;
+      var dateInput = formElement.querySelector('input[name="date"]');
+      if (!dateInput) return;
+
+      var now = new Date();
+      var todayStr = getLocalDateStr(now);
+      var currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+      // Ensure min is set to today
+      dateInput.min = todayStr;
+
+      // Prevent past dates
+      if (!dateInput.value || dateInput.value < todayStr) {
+        dateInput.value = todayStr;
+      }
+
+      var selectedDate = dateInput.value;
+      var isToday = (selectedDate === todayStr);
+
+      var pills = Array.from(formElement.querySelectorAll('.slot-pill'));
+      var hintEl = formElement.querySelector('.slot-time-hint') || document.getElementById('slotTimeHint');
+
+      var nearestAvailablePill = null;
+      var hasActiveValidPill = false;
+      var currentActivePill = formElement.querySelector('.slot-pill.active');
+
+      pills.forEach(function(pill) {
+        var slotTime = pill.getAttribute('data-slot');
+        var slotMin = parseSlotToMinutes(slotTime);
+
+        if (isToday) {
+          // If today: slot has passed if its start time is <= current time
+          if (slotMin <= currentMinutes) {
+            pill.disabled = true;
+            pill.classList.add('is-passed');
+            pill.classList.remove('active');
+            pill.setAttribute('aria-disabled', 'true');
+            pill.title = 'Slot passed for today';
+          } else {
+            pill.disabled = false;
+            pill.classList.remove('is-passed');
+            pill.removeAttribute('aria-disabled');
+            pill.title = 'Available: ' + slotTime;
+            if (!nearestAvailablePill) {
+              nearestAvailablePill = pill; // First chronologically valid upcoming slot
+            }
+            if (pill === currentActivePill) {
+              hasActiveValidPill = true;
+            }
+          }
+        } else {
+          // Future date: all slots enabled
+          pill.disabled = false;
+          pill.classList.remove('is-passed');
+          pill.removeAttribute('aria-disabled');
+          pill.title = 'Available: ' + slotTime;
+          if (!nearestAvailablePill) {
+            nearestAvailablePill = pill;
+          }
+          if (pill === currentActivePill) {
+            hasActiveValidPill = true;
+          }
+        }
+      });
+
+      // Auto-select nearest slot if current active is invalid or nothing is selected
+      if (!hasActiveValidPill && nearestAvailablePill) {
+        pills.forEach(function(p) { p.classList.remove('active'); });
+        nearestAvailablePill.classList.add('active');
+      } else if (!nearestAvailablePill) {
+        pills.forEach(function(p) { p.classList.remove('active'); });
+      }
+
+      // Update feedback hint banner
+      if (hintEl) {
+        var dParts = selectedDate.split('-');
+        var dObj = new Date(parseInt(dParts[0], 10), parseInt(dParts[1], 10) - 1, parseInt(dParts[2], 10));
+        var isSunday = (dObj.getDay() === 0);
+
+        if (isSunday) {
+          hintEl.innerHTML = '<span class="hint-warning">⚠️ Note: Clinic is closed on Sundays. Please call <a href="tel:+918828354171">+91 88283 54171</a> for special emergency care.</span>';
+          hintEl.style.display = 'block';
+        } else if (isToday) {
+          if (!nearestAvailablePill) {
+            hintEl.innerHTML = '<span class="hint-alert">⚡ Today\'s scheduled consultation slots have ended. Please select tomorrow or a future date above.</span>';
+            hintEl.style.display = 'block';
+          } else {
+            var activeP = formElement.querySelector('.slot-pill.active') || nearestAvailablePill;
+            var activeSlotName = activeP.getAttribute('data-slot');
+            hintEl.innerHTML = '<span class="hint-success">✨ Nearest available upcoming slot selected: <strong>' + activeSlotName + '</strong> (past times disabled)</span>';
+            hintEl.style.display = 'block';
+          }
+        } else {
+          hintEl.innerHTML = '<span class="hint-info">📅 Showing all available consultation slots for selected date.</span>';
+          hintEl.style.display = 'block';
+        }
+      }
+    }
+
+    // Set initial min and values
+    var initialToday = getLocalDateStr();
     if (modalDateInput) {
-      modalDateInput.min = todayStr;
-      modalDateInput.value = todayStr;
+      modalDateInput.min = initialToday;
+      modalDateInput.value = initialToday;
+      modalDateInput.addEventListener('change', function() {
+        updateSlotAvailability(modalForm);
+      });
+      modalDateInput.addEventListener('input', function() {
+        updateSlotAvailability(modalForm);
+      });
     }
     if (inlineDateInput) {
-      inlineDateInput.min = todayStr;
-      inlineDateInput.value = todayStr;
+      inlineDateInput.min = initialToday;
+      inlineDateInput.value = initialToday;
+      inlineDateInput.addEventListener('change', function() {
+        updateSlotAvailability(inlineForm);
+      });
+      inlineDateInput.addEventListener('input', function() {
+        updateSlotAvailability(inlineForm);
+      });
     }
 
     // Handle Slot Pill Buttons Selection for any container
@@ -1097,7 +1222,9 @@
       if (!container) return;
       var pills = container.querySelectorAll('.slot-pill');
       pills.forEach(function(pill) {
-        pill.addEventListener('click', function() {
+        pill.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (this.disabled || this.classList.contains('is-passed')) return;
           pills.forEach(function(p) { p.classList.remove('active'); });
           this.classList.add('active');
         });
@@ -1110,17 +1237,31 @@
     // Open Modal Handler
     function openSlotModal(treatmentValue) {
       if (!modalBackdrop) return;
+
+      var now = new Date();
+      var todayStr = getLocalDateStr(now);
+
+      if (modalDateInput) {
+        modalDateInput.min = todayStr;
+        modalDateInput.value = todayStr;
+      }
+
       if (treatmentValue) {
         var treatmentSelect = document.getElementById('slotTreatment');
         if (treatmentSelect) {
           for (var i = 0; i < treatmentSelect.options.length; i++) {
-            if (treatmentSelect.options[i].value === treatmentValue) {
+            if (treatmentSelect.options[i].value === treatmentValue || treatmentSelect.options[i].text.indexOf(treatmentValue) !== -1) {
               treatmentSelect.selectedIndex = i;
               break;
             }
           }
         }
       }
+
+      if (modalForm) {
+        updateSlotAvailability(modalForm);
+      }
+
       modalBackdrop.classList.add('is-open');
       modalBackdrop.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
@@ -1164,6 +1305,10 @@
       }
     });
 
+    // Initial slot setup if forms exist on page
+    if (modalForm) updateSlotAvailability(modalForm);
+    if (inlineForm) updateSlotAvailability(inlineForm);
+
     // Send WhatsApp Message Logic
     function handleFormReservation(formElement) {
       if (!formElement) return;
@@ -1178,33 +1323,35 @@
 
         var nameVal = nameInput ? nameInput.value.trim() : '';
         var phoneVal = phoneInput ? phoneInput.value.trim() : '';
-        var treatmentVal = treatmentSelect ? treatmentSelect.value : 'General Check-up';
-        var dateVal = dateInput ? dateInput.value : todayStr;
+        var treatmentVal = treatmentSelect ? treatmentSelect.value : 'General Check-up & Cleaning';
+        var dateVal = dateInput ? dateInput.value : getLocalDateStr();
         
-        var activePill = formElement.querySelector('.slot-pill.active');
-        var slotVal = activePill ? activePill.getAttribute('data-slot') : '5:30 PM';
+        var activePill = formElement.querySelector('.slot-pill.active:not(:disabled):not(.is-passed)');
+        if (!activePill) {
+          alert('Please select an available consultation time slot.');
+          return;
+        }
+        var slotVal = activePill.getAttribute('data-slot');
 
         if (!nameVal) {
           alert('Please enter your full name.');
-          var ni = formElement.querySelector('input[name="name"]');
-          if (ni) ni.focus();
+          if (nameInput) nameInput.focus();
           return;
         }
 
         if (!phoneVal || phoneVal.length < 10) {
           alert('Please enter a valid 10-digit mobile number.');
-          var pi = formElement.querySelector('input[name="phone"]');
-          if (pi) pi.focus();
+          if (phoneInput) phoneInput.focus();
           return;
         }
 
-        // Format clean WhatsApp message without asterisks
+        // Format clean WhatsApp message
         var msg = "Hi Dr. Muskan, I would like to reserve a consultation slot at Dent-O-Smile:\n\n" +
-                  "\u2022 Name: " + nameVal + "\n" +
-                  "\u2022 Phone: " + phoneVal + "\n" +
-                  "\u2022 Treatment: " + treatmentVal + "\n" +
-                  "\u2022 Date: " + dateVal + "\n" +
-                  "\u2022 Preferred Slot: " + slotVal + "\n\n" +
+                  "- Name: " + nameVal + "\n" +
+                  "- Phone: " + phoneVal + "\n" +
+                  "- Treatment: " + treatmentVal + "\n" +
+                  "- Date: " + dateVal + "\n" +
+                  "- Preferred Slot: " + slotVal + "\n\n" +
                   "Please confirm availability. Thank you!";
 
         var waUrl = "https://wa.me/918828354171?text=" + encodeURIComponent(msg);
