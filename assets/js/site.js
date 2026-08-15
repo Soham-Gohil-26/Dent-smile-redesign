@@ -1,5 +1,20 @@
 /* Dr. Muskan's Dent-O-Smile — single-page site JS */
 (function () {
+  // Suppress third-party browser extension errors from cluttering the console
+  window.addEventListener('error', function (e) {
+    if (e.filename && (e.filename.indexOf('chrome-extension:') !== -1 || e.filename.indexOf('moz-extension:') !== -1)) {
+      e.stopImmediatePropagation();
+      return true;
+    }
+  }, true);
+
+  window.addEventListener('unhandledrejection', function (e) {
+    if (e.reason && (String(e.reason).indexOf('chrome-extension:') !== -1 || (e.reason.stack && e.reason.stack.indexOf('chrome-extension:') !== -1))) {
+      e.stopImmediatePropagation();
+      e.preventDefault();
+    }
+  });
+
   // Mark JS as ready for progressive animation enhancement
   document.documentElement.classList.add('js-ready');
 
@@ -98,7 +113,7 @@
           entry.target.classList.remove('revealed');
         }
       });
-    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+    }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
 
     var revealEls = document.querySelectorAll(selectorString);
     revealEls.forEach(function (el) {
@@ -113,7 +128,7 @@
           entry.target.classList.remove('stagger-go');
         }
       });
-    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+    }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
 
     var staggerParents = document.querySelectorAll('.stagger-parent');
     staggerParents.forEach(function (el) {
@@ -868,7 +883,7 @@
                 "- Primary Concern: " + (popupQuizState.concern || "General Assessment") + "\n" +
                 "- Care Timeline: " + (popupQuizState.timeline || "Routine") + "\n" +
                 "- Primary Goal: " + (popupQuizState.priority || "Gentle Care") + "\n\n" +
-                "I would like to book a personalized consultation with you at Dent-O-Smile.";
+                "I would like to book a personalized consultation with you at Dr. Muskan's Dent-O-Smile.";
 
       var url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(msg);
       sessionStorage.setItem('dent_quiz_completed', 'true');
@@ -931,7 +946,7 @@
       sittings: "1 Visit (45–60 mins)",
       pain: "Gentle / Mild Sensitivity",
       longevity: "1 – 3 Years",
-      tech: "",
+      tech: "LED Accelerator Light + Shade Guide",
       advice: "Follow up with post-treatment dietary advice to maintain brilliant brightness."
     }
   };
@@ -952,12 +967,21 @@
       if (estAdvice) estAdvice.textContent = d.advice;
 
       var estTechBox = document.getElementById('estTechBox') || (estTech ? estTech.parentElement : null);
+      var estLongevityBox = document.getElementById('estLongevityBox') || (estLongevity ? estLongevity.parentElement : null);
       if (d.tech) {
         if (estTech) estTech.textContent = d.tech;
         if (estTechBox) estTechBox.style.display = '';
+        if (estLongevityBox) {
+          estLongevityBox.style.gridColumn = '';
+          estLongevityBox.style.textAlign = '';
+        }
       } else {
         if (estTech) estTech.textContent = '';
         if (estTechBox) estTechBox.style.display = 'none';
+        if (estLongevityBox) {
+          estLongevityBox.style.gridColumn = '1 / -1';
+          estLongevityBox.style.textAlign = 'center';
+        }
       }
     });
   });
@@ -1346,7 +1370,7 @@
         }
 
         // Format clean WhatsApp message
-        var msg = "Hi Dr. Muskan, I would like to reserve a consultation slot at Dent-O-Smile:\n\n" +
+        var msg = "Hi Dr. Muskan, I would like to reserve a consultation slot at Dr. Muskan's Dent-O-Smile:\n\n" +
                   "- Name: " + nameVal + "\n" +
                   "- Phone: " + phoneVal + "\n" +
                   "- Treatment: " + treatmentVal + "\n" +
