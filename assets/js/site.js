@@ -880,9 +880,9 @@
     btnQuizWhatsApp.addEventListener('click', function() {
       var phone = "918828354171";
       var msg = "Hello Dr. Muskan! I completed the Diagnostic Smile Assessment on your website:\n\n" +
-                "- Primary Concern: " + (popupQuizState.concern || "General Assessment") + "\n" +
-                "- Care Timeline: " + (popupQuizState.timeline || "Routine") + "\n" +
-                "- Primary Goal: " + (popupQuizState.priority || "Gentle Care") + "\n\n" +
+                "• Primary Concern: " + (popupQuizState.concern || "General Assessment") + "\n" +
+                "• Care Timeline: " + (popupQuizState.timeline || "Routine") + "\n" +
+                "• Primary Goal: " + (popupQuizState.priority || "Gentle Care") + "\n\n" +
                 "I would like to book a personalized consultation with you at Dr. Muskan's Dent-O-Smile.";
 
       var url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(msg);
@@ -1371,11 +1371,11 @@
 
         // Format clean WhatsApp message
         var msg = "Hi Dr. Muskan, I would like to reserve a consultation slot at Dr. Muskan's Dent-O-Smile:\n\n" +
-                  "- Name: " + nameVal + "\n" +
-                  "- Phone: " + phoneVal + "\n" +
-                  "- Treatment: " + treatmentVal + "\n" +
-                  "- Date: " + dateVal + "\n" +
-                  "- Preferred Slot: " + slotVal + "\n\n" +
+                  "• Name: " + nameVal + "\n" +
+                  "• Phone: " + phoneVal + "\n" +
+                  "• Treatment: " + treatmentVal + "\n" +
+                  "• Date: " + dateVal + "\n" +
+                  "• Preferred Slot: " + slotVal + "\n\n" +
                   "Please confirm availability. Thank you!";
 
         var waUrl = "https://wa.me/918828354171?text=" + encodeURIComponent(msg);
