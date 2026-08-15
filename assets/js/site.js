@@ -99,18 +99,17 @@
     });
   }
 
-  /* ── Intersection Observer — re-triggerable scroll reveal ─ */
+  /* ── Intersection Observer — one-time scroll reveal ──────── */
   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   var selectorString = '.reveal-fade, .reveal-up, .reveal-down, .reveal-slide-left, .reveal-slide-right, .reveal-left, .reveal-right, .reveal-scale, .scale-in, .reveal-blur';
 
   if (!prefersReduced && 'IntersectionObserver' in window) {
-    var revealObserver = new IntersectionObserver(function (entries) {
+    var revealObserver = new IntersectionObserver(function (entries, observer) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
           entry.target.classList.add('revealed');
-        } else {
-          entry.target.classList.remove('revealed');
+          observer.unobserve(entry.target);
         }
       });
     }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
@@ -120,12 +119,11 @@
       revealObserver.observe(el);
     });
 
-    var staggerObserver = new IntersectionObserver(function (entries) {
+    var staggerObserver = new IntersectionObserver(function (entries, observer) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
           entry.target.classList.add('stagger-go');
-        } else {
-          entry.target.classList.remove('stagger-go');
+          observer.unobserve(entry.target);
         }
       });
     }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
@@ -982,6 +980,25 @@
           estLongevityBox.style.gridColumn = '1 / -1';
           estLongevityBox.style.textAlign = 'center';
         }
+      }
+    });
+  });
+
+  /* ── Specialist Read More / Less Toggle ────────────────────── */
+  document.querySelectorAll('.spec-read-more-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var targetId = this.getAttribute('data-target');
+      var moreText = document.getElementById(targetId);
+      if (!moreText) return;
+      var isExpanded = this.getAttribute('aria-expanded') === 'true';
+      if (isExpanded) {
+        moreText.style.display = 'none';
+        this.textContent = 'Read More +';
+        this.setAttribute('aria-expanded', 'false');
+      } else {
+        moreText.style.display = 'inline';
+        this.textContent = 'Read Less −';
+        this.setAttribute('aria-expanded', 'true');
       }
     });
   });
